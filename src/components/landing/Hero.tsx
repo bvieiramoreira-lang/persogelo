@@ -20,7 +20,7 @@ export default function Hero({ onOpenBudget }: HeroProps) {
             className="flex flex-col w-full justify-center items-center text-center h-full pt-10 lg:pt-0 mx-auto"
           >
             <div className="flex flex-col gap-1 mb-8 w-full">
-              <h1 className="text-3xl sm:text-4xl md:text-[2.8rem] lg:text-[3.2rem] font-bold tracking-tight text-black whitespace-nowrap">
+              <h1 className="text-3xl sm:text-4xl md:text-[2.8rem] lg:text-[3.2rem] font-bold tracking-tight text-black md:whitespace-nowrap">
                 Bolsas Térmicas Personalizadas
               </h1>
               

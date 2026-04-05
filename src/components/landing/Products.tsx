@@ -131,7 +131,7 @@ export default function Products() {
 
                 {/* Badge Mais Vendido */}
                 {prod.isBestSeller && (
-                  <div className="absolute top-6 left-0 bg-[#ff5757] text-white text-[10px] md:text-xs font-black tracking-wide px-4 py-1.5 shadow-md z-20 rounded-r-full">
+                  <div className="absolute top-0 left-0 bg-[#ff5757] text-white text-[10px] md:text-xs font-black tracking-wide px-3 md:px-4 py-1.5 shadow-md z-20 rounded-tl-xl md:rounded-tl-[2rem] rounded-br-xl">
                     MAIS VENDIDO 🔥
                   </div>
                 )}
@@ -269,7 +269,10 @@ function TextureSection({ data }: { data: any }) {
              </div>
 
              {/* BOTÃO COMPRAR */}
-             <button className="w-full mt-1 bg-[#ff5757] hover:bg-[#e04848] text-white font-extrabold text-xs md:text-sm py-3 rounded-2xl shadow border border-red-500/20 hover:shadow-lg transition-all flex items-center justify-center gap-2 group/btn">
+             <button 
+               onClick={() => document.getElementById('formulario')?.scrollIntoView({ behavior: 'smooth' })}
+               className="w-full mt-1 bg-[#ff5757] hover:bg-[#e04848] text-white font-extrabold text-xs md:text-sm py-3 rounded-2xl shadow border border-red-500/20 hover:shadow-lg transition-all flex items-center justify-center gap-2 group/btn"
+             >
                 <ShoppingCart size={18} strokeWidth={2.5} className="group-hover/btn:scale-110 transition-transform" />
                 <span className="tracking-wide text-shadow-sm">COMPRAR AGORA</span>
              </button>
