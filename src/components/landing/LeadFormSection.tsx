@@ -25,7 +25,7 @@ export default function LeadFormSection() {
   const [step, setStep] = useState(1);
 
   const { register, handleSubmit, formState: { errors }, reset, setValue, trigger } = useForm<FormData>({
-    resolver: zodResolver(step === 1 ? formSchemaStep1 : formSchemaStep2),
+    resolver: zodResolver(formSchemaStep2),
   });
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
