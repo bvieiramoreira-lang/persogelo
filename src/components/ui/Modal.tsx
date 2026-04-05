@@ -177,7 +177,6 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
                             onChange={handlePhoneChange}
                             placeholder="(48) 98435-3081"
                             maxLength={15}
-                            autoFocus
                             className="w-full bg-[#f2f6fa] border border-transparent focus:border-[#d0dbe5] rounded-lg px-4 py-3.5 h-[50px] outline-none transition-all placeholder:text-foreground/40 text-foreground font-medium text-base"
                           />
                         </div>
@@ -209,7 +208,6 @@ export default function Modal({ isOpen, onClose }: ModalProps) {
                         <label className="block text-sm font-semibold text-foreground mb-1.5 ml-1">Nome Completo</label>
                         <input 
                           {...register("name")}
-                          autoFocus
                           placeholder="Sua Clínica ou Seu Nome"
                           className="w-full bg-[#f2f6fa] border border-transparent focus:border-[#d0dbe5] rounded-xl px-4 py-3 outline-none transition-all placeholder:text-foreground/40 text-foreground"
                         />
