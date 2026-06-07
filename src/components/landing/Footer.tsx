@@ -70,11 +70,34 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Column 3: CNPJ + Hours */}
+          {/* Column 3: WhatsApp + CNPJ + Hours */}
           <div className="flex flex-col">
-            <div className="mb-8">
+            <div className="mb-6">
+               <h4 className="font-bold text-gray-800 tracking-wide uppercase mb-1">Contato</h4>
+               <div className="h-0.5 w-full bg-blue-600 mb-3"></div>
+               <a
+                 href="https://wa.me/5548999552658"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="flex items-center gap-2 text-gray-700 hover:text-[#25D366] transition-colors font-bold text-base group"
+               >
+                 <svg
+                   xmlns="http://www.w3.org/2000/svg"
+                   width="20"
+                   height="20"
+                   viewBox="0 0 24 24"
+                   fill="currentColor"
+                   className="text-[#25D366] group-hover:scale-105 transition-transform"
+                 >
+                   <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.968C16.638 1.97 14.162.94 11.53.94c-5.44 0-9.866 4.372-9.87 9.802 0 1.714.47 3.387 1.357 4.847l-.993 3.629 3.734-.972zm11.23-6.223c-.302-.15-1.78-.875-2.056-.975-.275-.1-.476-.15-.675.15-.199.3-.77.975-.945 1.175-.175.2-.35.225-.65.075-.302-.15-1.272-.469-2.423-1.494-.895-.797-1.498-1.782-1.674-2.081-.175-.3-.018-.462.13-.61.135-.133.303-.35.454-.525.152-.175.202-.3.303-.5.101-.2.05-.375-.025-.525-.075-.15-.675-1.625-.925-2.225-.244-.589-.493-.51-.675-.52-.172-.007-.368-.009-.565-.009-.199 0-.523.074-.797.374-.275.3-1.05 1.025-1.05 2.5s1.075 2.9 1.225 3.1c.15.2 2.11 3.224 5.116 4.525.715.31 1.273.495 1.71.635.717.228 1.37.195 1.885.118.574-.086 1.78-.725 2.03-1.425.25-.7.25-1.299.175-1.425-.075-.125-.275-.2-.575-.35z" />
+                 </svg>
+                 <span>(48) 99955-2658</span>
+               </a>
+            </div>
+
+            <div className="mb-6">
                <h4 className="font-bold text-gray-800 tracking-wide uppercase mb-1">CNPJ: 61.005.731/0001-14</h4>
-               <div className="h-0.5 w-full max-w-[200px] bg-blue-600"></div>
+               <div className="h-0.5 w-full bg-blue-600"></div>
             </div>
 
             <div className="inline-block mb-3">
