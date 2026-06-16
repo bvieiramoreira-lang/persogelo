@@ -4,61 +4,209 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, X, Info, ShoppingCart } from "lucide-react";
 
-// --- DADOS DINÂMICOS MOCKADOS (Puxando a textura individual de cada modelo)
-const getPricesData = (id: string) => ({
-  tradicional: {
-    title: "Modelo Tradicional",
-    img: `/images/textura-${id}-tradicional.png`,
-    tiers: [
-      { q: 20, p1: "7,07", p2: "8,07" },
-      { q: 50, p1: "5,66", p2: "6,66" },
-      { q: 100, p1: "4,95", p2: "5,65" },
-      { q: 200, p1: "4,24", p2: "4,84" },
-      { q: 500, p1: "3,54", p2: "4,04" }
+// --- DEFINIÇÃO DOS PREÇOS ESPECÍFICOS POR MODELO (Tabela Gelo Tradicional + Colorido/Glitter)
+const PRODUCT_SPECIFIC_PRICES: Record<string, {
+  tradicional: { q: number; p1: string; p2: string; }[];
+  colorido: { q: number; p1: string; p2: string; }[];
+  glitter: { q: number; p1: string; p2: string; }[];
+}> = {
+  boca: {
+    tradicional: [
+      { q: 20, p1: "7,15", p2: "8,05" },
+      { q: 50, p1: "5,56", p2: "6,26" },
+      { q: 100, p1: "4,92", p2: "5,54" },
+      { q: 200, p1: "4,45", p2: "5,01" },
+      { q: 500, p1: "3,65", p2: "4,11" },
+      { q: 1000, p1: "3,34", p2: "3,76" }
     ],
-    colors: [
-      { name: "Cristal", hex: "#e0e0e0" }
+    colorido: [
+      { q: 20, p1: "9,40", p2: "10,30" },
+      { q: 50, p1: "7,31", p2: "8,01" },
+      { q: 100, p1: "6,47", p2: "7,09" },
+      { q: 200, p1: "5,85", p2: "6,41" },
+      { q: 500, p1: "4,80", p2: "5,26" },
+      { q: 1000, p1: "4,39", p2: "4,81" }
+    ],
+    glitter: [
+      { q: 20, p1: "11,65", p2: "12,55" },
+      { q: 50, p1: "9,06", p2: "9,76" },
+      { q: 100, p1: "8,02", p2: "8,64" },
+      { q: 200, p1: "7,25", p2: "7,81" },
+      { q: 500, p1: "5,95", p2: "6,41" },
+      { q: 1000, p1: "5,44", p2: "5,86" }
     ]
   },
-  colorido: {
-    title: "Modelo Gel Colorido",
-    img: `/images/textura-${id}-colorido.png`,
-    tiers: [
-      { q: 20, p1: "9,57", p2: "10,57" },
-      { q: 50, p1: "7,66", p2: "8,66" },
-      { q: 100, p1: "6,70", p2: "7,40" },
-      { q: 200, p1: "5,74", p2: "6,34" },
-      { q: 500, p1: "4,79", p2: "5,29" }
+  oval: {
+    tradicional: [
+      { q: 20, p1: "7,15", p2: "8,05" },
+      { q: 50, p1: "5,56", p2: "6,26" },
+      { q: 100, p1: "4,92", p2: "5,54" },
+      { q: 200, p1: "4,45", p2: "5,01" },
+      { q: 500, p1: "3,65", p2: "4,11" },
+      { q: 1000, p1: "3,34", p2: "3,76" }
     ],
-    colors: [
-      { name: "Azul", hex: "#3b82f6" },
-      { name: "Vermelho", hex: "#ef4444" },
-      { name: "Amarelo", hex: "#eab308" },
-      { name: "Verde", hex: "#22c55e" },
-      { name: "Roxo", hex: "#a855f7" },
-      { name: "Laranja", hex: "#f97316" },
-      { name: "Rosa", hex: "#ec4899" }
+    colorido: [
+      { q: 20, p1: "9,40", p2: "10,30" },
+      { q: 50, p1: "7,31", p2: "8,01" },
+      { q: 100, p1: "6,47", p2: "7,09" },
+      { q: 200, p1: "5,85", p2: "6,41" },
+      { q: 500, p1: "4,80", p2: "5,26" },
+      { q: 1000, p1: "4,39", p2: "4,81" }
+    ],
+    glitter: [
+      { q: 20, p1: "11,65", p2: "12,55" },
+      { q: 50, p1: "9,06", p2: "9,76" },
+      { q: 100, p1: "8,02", p2: "8,64" },
+      { q: 200, p1: "7,25", p2: "7,81" },
+      { q: 500, p1: "5,95", p2: "6,41" },
+      { q: 1000, p1: "5,44", p2: "5,86" }
     ]
   },
-  glitter: {
-    title: "Modelo Gel Glitter",
-    img: `/images/textura-${id}-glitter.png`,
-    tiers: [
-      { q: 20, p1: "12,07", p2: "13,07" },
-      { q: 50, p1: "9,66", p2: "10,46" },
-      { q: 100, p1: "8,45", p2: "9,15" },
-      { q: 200, p1: "7,24", p2: "7,84" },
-      { q: 500, p1: "6,04", p2: "6,54" }
+  olhos: {
+    tradicional: [
+      { q: 20, p1: "6,07", p2: "6,97" },
+      { q: 50, p1: "4,72", p2: "5,42" },
+      { q: 100, p1: "4,18", p2: "4,80" },
+      { q: 200, p1: "3,78", p2: "4,34" },
+      { q: 500, p1: "3,10", p2: "3,56" },
+      { q: 1000, p1: "2,83", p2: "3,25" }
     ],
-    colors: [
-      { name: "Vermelho", hex: "#ef4444" },
-      { name: "Rosa", hex: "#ec4899" },
-      { name: "Dourado", hex: "#eab308" },
-      { name: "Prata", hex: "#cbd5e1" },
-      { name: "Rosé", hex: "#fda4af" }
+    colorido: [
+      { q: 20, p1: "8,32", p2: "9,22" },
+      { q: 50, p1: "6,47", p2: "7,17" },
+      { q: 100, p1: "5,73", p2: "6,35" },
+      { q: 200, p1: "5,18", p2: "5,74" },
+      { q: 500, p1: "4,25", p2: "4,71" },
+      { q: 1000, p1: "3,88", p2: "4,30" }
+    ],
+    glitter: [
+      { q: 20, p1: "10,57", p2: "11,47" },
+      { q: 50, p1: "8,22", p2: "8,92" },
+      { q: 100, p1: "7,28", p2: "7,90" },
+      { q: 200, p1: "6,58", p2: "7,14" },
+      { q: 500, p1: "5,40", p2: "5,86" },
+      { q: 1000, p1: "4,93", p2: "5,35" }
+    ]
+  },
+  bola: {
+    tradicional: [
+      { q: 20, p1: "7,34", p2: "8,24" },
+      { q: 50, p1: "5,71", p2: "6,41" },
+      { q: 100, p1: "5,06", p2: "5,68" },
+      { q: 200, p1: "4,57", p2: "5,13" },
+      { q: 500, p1: "3,75", p2: "4,21" },
+      { q: 1000, p1: "3,43", p2: "3,85" }
+    ],
+    colorido: [
+      { q: 20, p1: "9,59", p2: "10,49" },
+      { q: 50, p1: "7,46", p2: "8,16" },
+      { q: 100, p1: "6,61", p2: "7,23" },
+      { q: 200, p1: "5,97", p2: "6,53" },
+      { q: 500, p1: "4,90", p2: "5,36" },
+      { q: 1000, p1: "4,48", p2: "4,90" }
+    ],
+    glitter: [
+      { q: 20, p1: "11,84", p2: "12,74" },
+      { q: 50, p1: "9,21", p2: "9,91" },
+      { q: 100, p1: "8,16", p2: "8,78" },
+      { q: 200, p1: "7,37", p2: "7,93" },
+      { q: 500, p1: "6,05", p2: "6,51" },
+      { q: 1000, p1: "5,53", p2: "5,95" }
+    ]
+  },
+  absorvente: {
+    tradicional: [
+      { q: 20, p1: "7,66", p2: "8,56" },
+      { q: 50, p1: "5,96", p2: "6,66" },
+      { q: 100, p1: "5,28", p2: "5,90" },
+      { q: 200, p1: "4,78", p2: "5,32" },
+      { q: 500, p1: "3,91", p2: "4,37" },
+      { q: 1000, p1: "3,57", p2: "3,99" }
+    ],
+    colorido: [
+      { q: 20, p1: "9,91", p2: "10,81" },
+      { q: 50, p1: "7,71", p2: "8,41" },
+      { q: 100, p1: "6,83", p2: "7,45" },
+      { q: 200, p1: "6,16", p2: "6,72" },
+      { q: 500, p1: "5,06", p2: "5,52" },
+      { q: 1000, p1: "4,62", p2: "5,04" }
+    ],
+    glitter: [
+      { q: 20, p1: "12,16", p2: "13,06" },
+      { q: 50, p1: "9,46", p2: "10,16" },
+      { q: 100, p1: "8,38", p2: "9,00" },
+      { q: 200, p1: "7,56", p2: "8,12" },
+      { q: 500, p1: "6,21", p2: "6,67" },
+      { q: 1000, p1: "5,67", p2: "6,09" }
+    ]
+  },
+  dente: {
+    tradicional: [
+      { q: 20, p1: "7,66", p2: "8,56" },
+      { q: 50, p1: "5,96", p2: "6,66" },
+      { q: 100, p1: "5,28", p2: "5,90" },
+      { q: 200, p1: "4,78", p2: "5,32" },
+      { q: 500, p1: "3,91", p2: "4,37" },
+      { q: 1000, p1: "3,57", p2: "3,99" }
+    ],
+    colorido: [
+      { q: 20, p1: "9,91", p2: "10,81" },
+      { q: 50, p1: "7,71", p2: "8,41" },
+      { q: 100, p1: "6,83", p2: "7,45" },
+      { q: 200, p1: "6,16", p2: "6,72" },
+      { q: 500, p1: "5,06", p2: "5,52" },
+      { q: 1000, p1: "4,62", p2: "5,04" }
+    ],
+    glitter: [
+      { q: 20, p1: "12,16", p2: "13,06" },
+      { q: 50, p1: "9,46", p2: "10,16" },
+      { q: 100, p1: "8,38", p2: "9,00" },
+      { q: 200, p1: "7,56", p2: "8,12" },
+      { q: 500, p1: "6,21", p2: "6,67" },
+      { q: 1000, p1: "5,67", p2: "6,09" }
     ]
   }
-});
+};
+
+const getPricesData = (id: string) => {
+  const prices = PRODUCT_SPECIFIC_PRICES[id] || PRODUCT_SPECIFIC_PRICES["boca"];
+  return {
+    tradicional: {
+      title: "Modelo Tradicional",
+      img: `/images/textura-${id}-tradicional.png`,
+      tiers: prices.tradicional,
+      colors: [
+        { name: "Cristal", hex: "#e0e0e0" }
+      ]
+    },
+    colorido: {
+      title: "Modelo Gel Colorido",
+      img: `/images/textura-${id}-colorido.png`,
+      tiers: prices.colorido,
+      colors: [
+        { name: "Azul", hex: "#3b82f6" },
+        { name: "Vermelho", hex: "#ef4444" },
+        { name: "Amarelo", hex: "#eab308" },
+        { name: "Verde", hex: "#22c55e" },
+        { name: "Roxo", hex: "#a855f7" },
+        { name: "Laranja", hex: "#f97316" },
+        { name: "Rosa", hex: "#ec4899" }
+      ]
+    },
+    glitter: {
+      title: "Modelo Gel Glitter",
+      img: `/images/textura-${id}-glitter.png`,
+      tiers: prices.glitter,
+      colors: [
+        { name: "Vermelho", hex: "#ef4444" },
+        { name: "Rosa", hex: "#ec4899" },
+        { name: "Dourado", hex: "#eab308" },
+        { name: "Prata", hex: "#cbd5e1" },
+        { name: "Rosé", hex: "#fda4af" }
+      ]
+    }
+  };
+};
 
 const ptProducts = [
   { id: "boca", name: "Formato Boca", desc: "Modelado para procedimentos labiais.", spec: "Tamanho: 10x5 cm", img: "/images/product-boca.png", data: getPricesData("boca"), isBestSeller: true },
